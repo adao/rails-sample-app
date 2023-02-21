@@ -1,5 +1,9 @@
 #pages-index-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   header {
+    margin-top: calc(5vh - 8px);
     img {
       height: 200px;
       max-width: 320px;
@@ -7,5 +11,36 @@
       box-shadow: 0 1px 2px rgba(0,0,0,.2);
       border-radius: 10px;
     }
+    h1 {
+      font-weight: bold;
+      margin-bottom: 0;
+      font-size: 24px;
+      line-height: 36px;
+    }
+  }
+  div.main {
+    margin: 1rem auto;
+    max-width: 600px;
+    .credits {
+      margin-top: 0px;
+    }
+    .answered-question-container {
+      margin-top: 1rem;
+      strong {
+        margin-right: 5px;
+      }
+      button {
+        display: block;
+      }
+    }
+  }
+  div.test {
+    margin-top: 50px;
+    .test-two {
+      margin-top: 20px;
+    }
+  }
+  footer {
+    margin-top: 1rem;
   }
 }

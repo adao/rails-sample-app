@@ -1,10 +1,12 @@
+import { useState, useRef } from 'react';
 import { render } from "react-dom"
+import { askQuestion } from "clients/main";
 import h from 'tools/htm-create-element';
 
 function Header() {
   return h`
     <header>
-      <a>
+      <a href="https://www.amazon.com/Minimalist-Entrepreneur-Great-Founders-More/dp/0593192397">
         <img src="https://askmybook.com/static/book.2a513df7cb86.png" />
       </a>
       <h1>Ask My Book</h1>
@@ -13,21 +15,52 @@ function Header() {
 }
 
 function Main() {
+  const [isAsking, setIsAsking] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
+  const textAreaEl = useRef(null);
+  const askQuestionHandler = () => {
+    if (!question)
+      return alert("Please ask a question!")
+    setIsAsking(true);
+    askQuestion(textAreaEl.value)
+      .then(answer => {
+        setAnswer(answer);
+        setIsAsking(false);
+      })
+      .catch(() => {
+        alert("Sorry! There seems to be an issue with our server. Please try again later.");
+      })
+  }
+
+  const feelLuckyHandler = () => {
+
+  }
+
+  const askAnotherHandler = () => {
+    setAnswer("");
+    textAreaEl.current.focus();
+    textAreaEl.current.select();
+  }
+
   return h`
     <div class="main">
       <p class="credits">
         This is an experiment in using AI to make my book's content more accessible. Ask a question and AI'll answer it in real time:
       </p>
-      <textarea name="question" />
-      <div style=${{display: 'none'}} class="buttons-centered">
-        <button type="submit">Ask question</button>
-        <button class="button-secondary">I'm feeling lucky</button>
-      </div>
-      <div class="answered-question-container">
-        <strong>Answer:</strong>
-        <span>The Minimalist Entrepreneur is a book about how to start and grow a business with less stress and fewer resources. It covers topics like how to choose what business to start, how to build and sell your product, and how to manage your time and money.</span>
-        <button>Ask another question</button>
-      </div>
+      <textarea ref=${textAreaEl} value=${question} onChange=${e => setQuestion(e.currentTarget.value)} />
+      ${answer ? h`
+        <div class="answered-question-container">
+          <strong>Answer:</strong>
+          <span>${answer}</span>
+          <button onClick=${askAnotherHandler}>Ask another question</button>
+        </div>
+      ` : h`
+        <div class="buttons-centered">
+          <button type="submit" onClick=${askQuestionHandler} disabled=${isAsking}>Ask question</button>
+          <button class="button-secondary" onClick=${feelLuckyHandler}>I'm feeling lucky</button>
+        </div>
+      `}
     </div>
   `
 }

@@ -23,9 +23,9 @@ function Main() {
     if (!question)
       return alert("Please ask a question!")
     setIsAsking(true);
-    askQuestion(textAreaEl.value)
-      .then(answer => {
-        setAnswer(answer);
+    askQuestion(textAreaEl.current.value)
+      .then(question => {
+        setAnswer(question.answer);
         setIsAsking(false);
       })
       .catch(() => {

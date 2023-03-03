@@ -2,6 +2,6 @@ import axios from 'axios';
 
 export function askQuestion(question) {
   return axios.post('/ask-question', {
-    data: { question }
+    question
   }).then(resp => resp.data);
 }

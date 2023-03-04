@@ -22,6 +22,7 @@ function Main() {
   const askQuestionHandler = () => {
     if (!question)
       return alert("Please ask a question!")
+
     setIsAsking(true);
     askQuestion(textAreaEl.current.value)
       .then(question => {
@@ -34,7 +35,9 @@ function Main() {
   }
 
   const feelLuckyHandler = () => {
-
+    const questions = ["What is the book about?", "Who is the author?"];
+    const random = Math.floor(Math.random() * questions.length);
+    setQuestion(questions[random]);
   }
 
   const askAnotherHandler = () => {

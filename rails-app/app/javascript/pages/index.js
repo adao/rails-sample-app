@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { render } from "react-dom"
 import { askQuestion } from "clients/main";
 import h from 'tools/htm-create-element';
+import { speakInBrowser } from 'tools/speech-synthesis';
 
 function Header() {
   return h`
@@ -27,6 +28,7 @@ function Main() {
     askQuestion(textAreaEl.current.value)
       .then(question => {
         setAnswer(question.answer);
+        speakInBrowser(question.answer);
         setIsAsking(false);
       })
       .catch(() => {

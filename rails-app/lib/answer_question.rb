@@ -1,9 +1,6 @@
 require 'csv'
-require 'uri'
-require 'net/http'
 require 'matrix'
-
-OPENAI_API_KEY = ENV["OPENAI_API_KEY"]
+require './lib/openai_api'
 
 def sample_questions
   <<-TEXT
@@ -19,53 +16,6 @@ A: I would recommend building first. Building will teach you a lot, and too many
 Q: Andrew Chen has a book on this so maybe touché, but how should founders think about the cold start problem? Businesses are hard to start, and even harder to sustain but the latter is somewhat defined and structured, whereas the former is the vast unknown. Not sure if it's worthy, but this is something I have personally struggled with
 A: Hey, this is about my book, not his! I would solve the problem from a single player perspective first. For example, Gumroad is useful to a creator looking to sell something even if no one is currently using the platform. Usage helps, but it's not necessary.
   TEXT
-end
-
-
-def get_embedding(text, model)
-  params = {
-    'input': text,
-    'model': model
-  }
-  uri = URI("https://api.openai.com/v1/embeddings")
-  req = Net::HTTP::Post.new(uri)
-  req['Authorization'] = "Bearer #{OPENAI_API_KEY}"
-  req['Content-Type'] = 'application/json'
-  req.body = params.to_json
-
-  res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-    http.request(req)
-  end
-  body = JSON.parse(res.body)
-  return body["data"][0]["embedding"]
-end
-
-DEFAULT_QUERY_EMBEDDING_MODEL = 'text-search-curie-query-001'
-def get_query_embedding(text, model=DEFAULT_QUERY_EMBEDDING_MODEL)
-  get_embedding(text, model)
-end
-
-DEFAULT_COMPLETION_MODEL = 'text-davinci-003'
-DEFAULT_COMPLETION_TEMPERATURE = 0
-DEFAULT_COMPLETION_MAX_TOKENS = 150
-def get_completion(prompt, options={})
-  params = {
-    'prompt': prompt, 
-    'model': options[:model] || DEFAULT_COMPLETION_MODEL,
-    'temperature': options[:temperature] || DEFAULT_COMPLETION_TEMPERATURE,
-    'max_tokens': options[:max_tokens] || DEFAULT_COMPLETION_MAX_TOKENS,
-  }
-  uri = URI("https://api.openai.com/v1/completions")
-  req = Net::HTTP::Post.new(uri)
-  req['Authorization'] = "Bearer #{OPENAI_API_KEY}"
-  req['Content-Type'] = 'application/json'
-  req.body = params.to_json
-
-  res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-    http.request(req)
-  end
-  body = JSON.parse(res.body)
-  return body["choices"][0]["text"]
 end
 
 def vector_similarity(arr1, arr2)

@@ -28,7 +28,6 @@
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
-lib/assets/book.pdf.embeddings.csv
 
 /public/assets
 

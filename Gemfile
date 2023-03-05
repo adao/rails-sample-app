@@ -72,3 +72,5 @@ end
 
 # Set ENV variables from yaml file
 gem "figaro"
+
+gem "matrix"

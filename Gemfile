@@ -69,3 +69,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+# Set ENV variables from yaml file
+gem "figaro"

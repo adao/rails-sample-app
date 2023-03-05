@@ -1,24 +1,13 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To generate embeddings from a pdf:
+- Run `python3 scripts/create-embeddings-from-pdf.py --pdf <path_to_pdf>`
+- Move the generated CSV to `lib/assets/book.pdf.embeddings.csv`
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To run server locally:
+- Add a environment configuration file at `config/application.yml` and make sure it has keys
+  - OPENAI_API_KEY
+  - DB_PASSWORD
+- Run `bin/rails db:create` to create the db
+- Run `bin/rails db:migrate` to migrate the db
+- Run `bin/rails server` to start the server
